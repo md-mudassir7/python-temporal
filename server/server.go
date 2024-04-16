@@ -5,6 +5,7 @@ import (
 	"context"
 	"net/http"
 	"sync"
+	"time"
 
 	"log"
 
@@ -29,7 +30,8 @@ func init() {
 }
 
 func health(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("I am healthy!!!!"))
+	log.Println("Recived health check request", r)
+	w.Write([]byte("Server is healthy!!!!"))
 }
 
 func Start() {
@@ -43,6 +45,12 @@ func Start() {
 	go func() {
 		err := server.srv.ListenAndServe()
 		log.Println("server.srv.ListenAndServe Failed", "error", err)
+	}()
+
+	func() {
+		for {
+			time.Sleep(1 * time.Second)
+		}
 	}()
 }
 
